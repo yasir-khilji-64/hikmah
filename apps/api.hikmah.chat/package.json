@@ -1,0 +1,30 @@
+{
+  "name": "@hikmah/api.hikmah.chat",
+  "version": "0.0.0",
+  "description": "AI-Powered wisdom chatbot",
+  "main": "src/index.ts",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "tsc",
+    "start": "ts-node src/index.ts",
+    "start:dev": "nodemon src/index.ts",
+    "start:prod": "node dist/index.js"
+  },
+  "keywords": [
+    "AI Chat",
+    "LLM",
+    "Ollama"
+  ],
+  "author": "Yasir Hassan",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yasir-khilji-64/hikmah"
+  },
+  "homepage": "https://github.com/yasir-khilji-64/hikmah#readme",
+  "devDependencies": {
+    "@types/node": "^22.13.4",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2"
+  }
+}
