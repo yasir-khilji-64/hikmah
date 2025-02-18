@@ -1,0 +1,115 @@
+# Build output
+dist/
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# OS-specific
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.Trash-*
+
+# Tests and Coverage
+coverage/
+.nyc_output/
+.vitest/
+.vitest_cache/
+
+# IDEs and Editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# TypeScript
+*.tsbuildinfo
+
+# Environment Variables
+.env
+.env.dev
+.env.prod
+.env.test
+.env.stage
+.env.local
+.env.*.local
+
+# HMR and Cache
+.vite/
+.cache/
+.hmr/
+
+# ESLint and Prettier
+.eslintcache
+.prettier-cache/
+
+# Jest & Vitest
+jest.config.js
+jest.config.ts
+jest.setup.js
+jest.setup.ts
+coverage/
+
+# Storybook
+storybook-static/
+
+# Next.js (if applicable)
+.next/
+.vercel/
+
+# Firebase
+.firebase/
+firestore.indexes.json
+firestore.rules
+storage.rules
+
+# Docker
+docker-data/
+.dockerignore
+Dockerfile
+docker-compose.yml
+
+# Swap files
+[._]*.s[a-v][a-z]
+!*.svg  # comment out if you don't need vector files
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+
+# Vim Sessions
+Session.vim
+Sessionx.vim
+
+# Temporary files
+.netrwhist
+*~
+*.tmp
+*.swp
+*.swo
+*.swn
+
+# Auto-generated tag files
+tags
+
+# Persistent undo
+[._]*.un~
