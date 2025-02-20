@@ -1,0 +1,23 @@
+{
+  "name": "@hikmah/contracts",
+  "version": "0.0.0",
+  "description": "AI-Powered wisdom chatbot",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "private": true,
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "tsc",
+    "format": "prettier --check src/**/*.ts",
+    "format:write": "prettier --write src/**/*.ts",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint --fix src/**/*.ts"
+  },
+  "keywords": [
+    "AI Chat",
+    "LLM",
+    "Ollama"
+  ],
+  "author": "Yasir Hassan",
+  "license": "MIT"
+}

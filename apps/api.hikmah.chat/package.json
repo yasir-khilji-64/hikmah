@@ -6,9 +6,16 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "tsc",
-    "start": "ts-node src/index.ts",
-    "start:dev": "nodemon src/index.ts",
-    "start:prod": "node dist/index.js"
+    "start": "pnpm dc:up && ts-node src/index.ts",
+    "start:dev": "pnpm dc:up && nodemon src/index.ts",
+    "start:prod": "pnpm dc:up && node dist/index.js",
+    "format": "prettier --check src/**/*.ts",
+    "format:write": "prettier --write src/**/*.ts",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint --fix src/**/*.ts",
+    "dc:up": "docker compose --env-file=./../../.env up --build -d",
+    "dc:down": "docker compose --env-file=./../../.env down --remove-orphans",
+    "dc:logs": "docker compose --env-file=./../../.env logs -f"
   },
   "keywords": [
     "AI Chat",
@@ -23,8 +30,20 @@
   },
   "homepage": "https://github.com/yasir-khilji-64/hikmah#readme",
   "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
     "@types/node": "^22.13.4",
     "nodemon": "^3.1.9",
     "ts-node": "^10.9.2"
+  },
+  "dependencies": {
+    "@hikmah/contracts": "workspace:^",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "mongoose": "^8.10.1",
+    "winston": "^3.17.0",
+    "zod": "^3.24.2"
   }
 }

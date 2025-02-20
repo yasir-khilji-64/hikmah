@@ -1,0 +1,19 @@
+services:
+  database:
+    container_name: database
+    image: mongo:latest
+    restart: always
+    environment:
+      # MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    ports:
+      - ${MONGO_PORT}:${MONGO_PORT}
+    volumes:
+      - ./docker-data/database:/data/db
+    networks:
+      - hikmah
+
+networks:
+  hikmah:
+    driver: bridge

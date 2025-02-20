@@ -7,7 +7,11 @@
     "build": "pnpm --parallel run build",
     "start": "pnpm --parallel run start",
     "start:dev": "pnpm --parallel run start:dev",
-    "start:prod": "pnpm --parallel run start:prod"
+    "start:prod": "pnpm --parallel run start:prod",
+    "format": "pnpm --parallel run format",
+    "format:write": "pnpm --parallel run format:write",
+    "lint": "pnpm --parallel run lint",
+    "lint:fix": "pnpm --parallel run lint:fix"
   },
   "keywords": [
     "AI Chat",
