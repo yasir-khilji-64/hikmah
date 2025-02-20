@@ -7,6 +7,13 @@ settings:
 importers:
 
   .:
+    dependencies:
+      mongoose:
+        specifier: ^8.10.1
+        version: 8.10.1
+      zod:
+        specifier: ^3.24.2
+        version: 3.24.2
     devDependencies:
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.24.1
@@ -59,15 +66,9 @@ importers:
       helmet:
         specifier: ^8.0.0
         version: 8.0.0
-      mongoose:
-        specifier: ^8.10.1
-        version: 8.10.1
       winston:
         specifier: ^3.17.0
         version: 3.17.0
-      zod:
-        specifier: ^3.24.2
-        version: 3.24.2
     devDependencies:
       '@types/cors':
         specifier: ^2.8.17
@@ -387,8 +388,8 @@ packages:
     resolution: {integrity: sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==}
     engines: {node: '>=8'}
 
-  bson@6.10.2:
-    resolution: {integrity: sha512-5afhLTjqDSA3akH56E+/2J6kTDuSIlBxyXPdQslj9hcIgOUE378xdOfZvC/9q3LifJNI6KR/juZ+d0NRNYBwXg==}
+  bson@6.10.3:
+    resolution: {integrity: sha512-MTxGsqgYTwfshYWTRdmZRC+M7FnG1b4y7RO7p2k3X24Wq0yv1m77Wsj0BzlPzd/IowgESfsruQCUToa7vbOpPQ==}
     engines: {node: '>=16.20.1'}
 
   bytes@3.1.2:
@@ -1180,11 +1181,11 @@ packages:
   mongodb-connection-string-url@3.0.2:
     resolution: {integrity: sha512-rMO7CGo/9BFwyZABcKAWL8UJwH/Kc2x0g72uhDWzG48URRax5TCIcJ7Rc3RZqffZzO/Gwff/jyKwCU9TN8gehA==}
 
-  mongodb@6.13.0:
-    resolution: {integrity: sha512-KeESYR5TEaFxOuwRqkOm3XOsMqCSkdeDMjaW5u2nuKfX7rqaofp7JQGoi7sVqQcNJTKuveNbzZtWMstb8ABP6Q==}
+  mongodb@6.13.1:
+    resolution: {integrity: sha512-gdq40tX8StmhP6akMp1pPoEVv+9jTYFSrga/g23JxajPAQhH39ysZrHGzQCSd9PEOnuEQEdjIWqxO7ZSwC0w7Q==}
     engines: {node: '>=16.20.1'}
     peerDependencies:
-      '@aws-sdk/credential-providers': ^3.188.0
+      '@aws-sdk/credential-providers': ^3.632.0
       '@mongodb-js/zstd': ^1.1.0 || ^2.0.0
       gcp-metadata: ^5.2.0
       kerberos: ^2.0.1
@@ -2139,7 +2140,7 @@ snapshots:
     dependencies:
       fill-range: 7.1.1
 
-  bson@6.10.2: {}
+  bson@6.10.3: {}
 
   bytes@3.1.2: {}
 
@@ -3037,17 +3038,17 @@ snapshots:
       '@types/whatwg-url': 11.0.5
       whatwg-url: 14.1.1
 
-  mongodb@6.13.0:
+  mongodb@6.13.1:
     dependencies:
       '@mongodb-js/saslprep': 1.2.0
-      bson: 6.10.2
+      bson: 6.10.3
       mongodb-connection-string-url: 3.0.2
 
   mongoose@8.10.1:
     dependencies:
-      bson: 6.10.2
+      bson: 6.10.3
       kareem: 2.6.3
-      mongodb: 6.13.0
+      mongodb: 6.13.1
       mpath: 0.9.0
       mquery: 5.0.0
       ms: 2.1.3
