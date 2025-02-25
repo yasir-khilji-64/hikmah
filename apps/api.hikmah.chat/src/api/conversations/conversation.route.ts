@@ -8,16 +8,23 @@ import {
   GetConversationsQueryValidator,
   UpdateConversationValidator,
 } from './conversation.validator';
+import { Ollama } from '../../utils';
+import { ChatService } from '../chat/chat.service';
 
 class ConversationRoute {
   private readonly router: Router;
+  private readonly ollama: Ollama;
+  private readonly chatService: ChatService;
   private readonly conversationService: ConversationService;
   private readonly conversationController: ConversationController;
 
   constructor() {
     this.router = Router();
-    this.conversationService = new ConversationService();
+    this.ollama = Ollama.GetInstance();
+    this.chatService = new ChatService(this.ollama);
+    this.conversationService = new ConversationService(this.ollama);
     this.conversationController = new ConversationController(
+      this.chatService,
       this.conversationService,
     );
 

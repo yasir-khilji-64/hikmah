@@ -1,12 +1,16 @@
-import type { IConversation, PaginatedResponse } from '@hikmah/contracts';
-import type { FilterQuery } from 'mongoose';
+import type {
+  IChatMessage,
+  IConversation,
+  PaginatedResponse,
+} from '@hikmah/contracts';
+import { Types, type FilterQuery } from 'mongoose';
 
 import { ConversationModel } from './conversation.model';
 import type {
-  CreateConversationDto,
   GetConversationsQueryDto,
   UpdateConversationDto,
 } from './conversation.schema';
+import type { Ollama } from '../../utils';
 import {
   InternalServerErrorException,
   Logger,
@@ -14,7 +18,10 @@ import {
 } from '../../utils';
 
 class ConversationService {
-  constructor() {}
+  private ollama: Ollama;
+  constructor(ollama: Ollama) {
+    this.ollama = ollama;
+  }
 
   public async listConversations(
     page: number = 1,
@@ -85,22 +92,29 @@ class ConversationService {
     }
   }
 
-  public async getConversationById(id: string): Promise<IConversation> {
+  public async getConversationById(
+    id: string,
+  ): Promise<IConversation & { messages: IChatMessage[] }> {
     try {
-      const converation = await ConversationModel.findById(id, {
-        _id: 0,
-        id: '$_id',
-        title: '$title',
-        model_name: '$model_name',
-        tag: '$tags',
-        status: '$status',
-        last_message_at: '$last_message_at',
-      }).lean();
-      if (!converation) {
+      const conversation = await ConversationModel.aggregate([
+        {
+          $match: {
+            _id: new Types.ObjectId(id),
+          },
+        },
+        {
+          $lookup: {
+            from: 'chat_messages',
+            localField: '_id',
+            foreignField: 'conversation_id',
+            as: 'messages',
+          },
+        },
+      ]).exec();
+      if (conversation.length === 0) {
         throw new NotFoundException('Conversation not found');
       }
-      Logger.debug('Conversation', ConversationService.name, { converation });
-      return converation;
+      return conversation[0];
     } catch (error) {
       Logger.error('Error fetching conversation', ConversationService.name, {
         error,
@@ -109,12 +123,15 @@ class ConversationService {
     }
   }
 
-  public async createConversation(
-    payload: CreateConversationDto,
-  ): Promise<IConversation> {
+  public async createConversation(modelName: string): Promise<IConversation> {
     try {
       const conversation = await ConversationModel.create({
-        ...payload,
+        title: 'Untitled Conversation',
+        model_name: modelName,
+        tags: [],
+        is_deleted: false,
+        last_message_at: new Date(),
+        metadata: {},
       });
       return conversation;
     } catch (error) {
@@ -193,6 +210,84 @@ class ConversationService {
         error,
       });
       throw error;
+    }
+  }
+
+  public async createTitle(
+    conversationId: string,
+    message: string,
+    assistant_message: string,
+  ): Promise<void> {
+    try {
+      const titleResponse = await this.ollama.sendMessage(
+        { role: 'user', content: message },
+        {
+          model: 'llama3.1:8b',
+          messages: [
+            {
+              role: 'assistant',
+              content: assistant_message,
+            },
+          ],
+          options: {
+            temperature: 0.5,
+          },
+        },
+        ['TITLE_GENERATION'],
+      );
+      await ConversationModel.findByIdAndUpdate(
+        new Types.ObjectId(conversationId),
+        {
+          $set: {
+            title: titleResponse.message.content,
+          },
+        },
+      );
+      return;
+    } catch (error) {
+      Logger.error('Error generating title', ConversationService.name, {
+        error,
+      });
+      throw new Error('Failed to generate title');
+    }
+  }
+
+  public async createTags(
+    conversationId: string,
+    message: string,
+    assistant_message: string,
+  ): Promise<void> {
+    try {
+      const tagResponse = await this.ollama.sendMessage(
+        { role: 'user', content: message },
+        {
+          model: 'llama3.1:8b',
+          messages: [
+            {
+              role: 'assistant',
+              content: assistant_message,
+            },
+          ],
+          options: {
+            temperature: 0.5,
+          },
+        },
+        ['TAG_GENERATION'],
+      );
+      await ConversationModel.findByIdAndUpdate(
+        new Types.ObjectId(conversationId),
+        {
+          $set: {
+            tags: tagResponse.message.content,
+          },
+        },
+      );
+      return;
+    } catch (error) {
+      Logger.error('Error generating tags', ConversationService.name, {
+        error,
+      });
+      throw new Error('Failed to generate tags');
     }
   }
 }

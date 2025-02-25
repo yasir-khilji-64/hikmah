@@ -2,13 +2,15 @@ import type { HealthCheckResponse, MessageResponse } from '@hikmah/contracts';
 import { StatusCodes } from '@hikmah/contracts';
 import type { Request, Response } from 'express';
 
-import type { Database } from '../../utils';
+import type { Database, Ollama } from '../../utils';
 
 class IndexController {
   private database: Database;
+  private ollama: Ollama;
 
-  constructor(database: Database) {
+  constructor(database: Database, ollama: Ollama) {
     this.database = database;
+    this.ollama = ollama;
   }
 
   public index(_request: Request, response: Response<MessageResponse>): void {
@@ -18,12 +20,13 @@ class IndexController {
     });
   }
 
-  public healthCheck(
+  public async healthCheck(
     _request: Request,
     response: Response<HealthCheckResponse>,
-  ): void {
+  ): Promise<void> {
     const database = this.database.getConnectionStatus();
-    const isHealthy = database === 'connected';
+    const ollama = await this.ollama.getConnectionStatus();
+    const isHealthy = database === 'connected' && ollama === 'running';
     const statusCode = isHealthy
       ? StatusCodes.OK
       : StatusCodes.SERVICE_UNAVAILABLE;
@@ -33,6 +36,7 @@ class IndexController {
       status: statusCode,
       message: message,
       database: database,
+      ollama: ollama,
       timestamp: new Date(),
       uptime: process.uptime(),
     });

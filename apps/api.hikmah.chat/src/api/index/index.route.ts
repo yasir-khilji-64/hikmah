@@ -1,17 +1,19 @@
 import { Router } from 'express';
 
 import { IndexController } from './index.controller';
-import { Database } from '../../utils';
+import { Database, Ollama } from '../../utils';
 
 class IndexRoute {
   private router: Router;
   private database: Database;
+  private ollama: Ollama;
   private indexController: IndexController;
 
   constructor() {
     this.router = Router();
     this.database = Database.GetInstance();
-    this.indexController = new IndexController(this.database);
+    this.ollama = Ollama.GetInstance();
+    this.indexController = new IndexController(this.database, this.ollama);
     this.initializeRoutes();
   }
 
