@@ -1,3 +1,4 @@
+import type { ConversationStatus } from '@hikmah/contracts';
 import { paginatedQuerySchema } from '@hikmah/contracts';
 import { Types } from 'mongoose';
 import { z } from 'zod';
@@ -24,9 +25,7 @@ const getConversationByIdQuerySchema = z.object({
   ),
 });
 const createConversationSchema = z.object({
-  title: z
-    .string({ required_error: 'Provide a title for the conversation' })
-    .min(2, { message: 'Provide a title for the conversation' }),
+  message: z.string().min(1, { message: 'Message is required' }),
   model_name: z.string({ required_error: 'Provide a valid model name' }),
 });
 const updateConversationSchema = z.object({
@@ -35,7 +34,10 @@ const updateConversationSchema = z.object({
     .min(2, { message: 'Provide a title for the conversation' })
     .optional(),
   tags: z.array(z.string()).optional(),
-  status: z.union([z.literal('active'), z.literal('archived')]).optional(),
+  status: z.nativeEnum({
+    active: 'active',
+    archived: 'archived',
+  } as const satisfies Record<ConversationStatus, ConversationStatus>),
 });
 
 type GetConversationsQueryDto = z.infer<typeof getConversationsQuerySchema>;

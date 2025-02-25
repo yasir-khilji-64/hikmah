@@ -13,11 +13,17 @@ import type {
   UpdateConversationDto,
 } from './conversation.schema';
 import type { ConversationService } from './conversation.service';
+import type { ChatService } from '../chat/chat.service';
 
 class ConversationController {
+  private readonly chatService: ChatService;
   private readonly conversationService: ConversationService;
 
-  constructor(conversationService: ConversationService) {
+  constructor(
+    chatService: ChatService,
+    conversationService: ConversationService,
+  ) {
+    this.chatService = chatService;
     this.conversationService = conversationService;
   }
 
@@ -79,13 +85,41 @@ class ConversationController {
     next: NextFunction,
   ): Promise<void> {
     try {
-      const result = await this.conversationService.createConversation(
-        request.body,
+      const { message, model_name } = request.body;
+      const conversation =
+        await this.conversationService.createConversation(model_name);
+      response.status(StatusCodes.CREATED);
+      response.setHeader('Content-Type', 'text/event-stream');
+      response.setHeader('Transfer-Encoding', 'chunked');
+      response.setHeader('Cache-Control', 'no-cache');
+      response.setHeader('Connection', 'keep-alive');
+      response.flushHeaders();
+      response.write(
+        `data: ${JSON.stringify({ conversationId: conversation.id })}\n\n`,
       );
-      response.status(StatusCodes.CREATED).json({
-        status: StatusCodes.CREATED,
-        data: result,
-      });
+      await this.chatService.createChat(
+        { role: 'user', content: message },
+        conversation.id,
+        (chunk) => {
+          response.write(chunk.content);
+        },
+        async (savedMessage) => {
+          await Promise.all([
+            this.conversationService.createTitle(
+              conversation.id,
+              message,
+              savedMessage.content,
+            ),
+            this.conversationService.createTags(
+              conversation.id,
+              message,
+              savedMessage.content,
+            ),
+          ]);
+          response.end();
+        },
+        model_name,
+      );
     } catch (error) {
       next(error);
     }
