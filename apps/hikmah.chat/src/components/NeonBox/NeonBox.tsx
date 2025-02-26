@@ -24,9 +24,7 @@ const NeonBox = (): JSX.Element => {
           alignItems: 'center',
         })}
       >
-        <Typography variant="h3" color="primary.contrastText">
-          Hikmah.Chat
-        </Typography>
+        <Typography variant="h3">Hikmah.Chat</Typography>
       </Box>
     </Box>
   );
