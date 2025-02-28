@@ -1,8 +1,17 @@
-import type { HealthCheckResponse, MessageResponse } from '@hikmah/contracts';
+import type {
+  ApiResponse,
+  HealthCheckResponse,
+  MessageResponse,
+} from '@hikmah/contracts';
 import { StatusCodes } from '@hikmah/contracts';
 import type { Request, Response } from 'express';
 
-import type { Database, Ollama } from '../../utils';
+import {
+  InternalServerErrorException,
+  Logger,
+  type Database,
+  type Ollama,
+} from '../../utils';
 
 class IndexController {
   private database: Database;
@@ -40,6 +49,24 @@ class IndexController {
       timestamp: new Date(),
       uptime: process.uptime(),
     });
+  }
+
+  public async listOllamaModels(
+    _request: Request,
+    response: Response<ApiResponse<string[]>>,
+  ): Promise<void> {
+    try {
+      const models = await this.ollama.listModels();
+      response.status(StatusCodes.OK).json({
+        status: StatusCodes.OK,
+        data: models,
+      });
+    } catch (error) {
+      Logger.error('Error retrieving Ollama models', IndexController.name, {
+        error,
+      });
+      throw new InternalServerErrorException('Fatal server error');
+    }
   }
 }
 
