@@ -10,7 +10,8 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { FC, useState } from 'react';
+import { FC } from 'react';
+import { useStore } from '../../state';
 
 interface AppbarProps {
   models: string[];
@@ -20,11 +21,9 @@ interface AppbarProps {
 
 const Appbar: FC<AppbarProps> = ({ models, title, onMenuClick }) => {
   const theme = useTheme();
-  const [selectedModel, setSelectedModel] = useState<string | null>(
-    models[0] || 'llama3.1:8b',
-  );
+  const { selectedModel, setSelectedModel } = useStore();
 
-  const handleModelChange = (event: SelectChangeEvent<string | null>): void => {
+  const handleModelChange = (event: SelectChangeEvent<string>): void => {
     setSelectedModel(event.target.value);
   };
 
