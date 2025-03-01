@@ -20,7 +20,9 @@ interface AppbarProps {
 
 const Appbar: FC<AppbarProps> = ({ models, title, onMenuClick }) => {
   const theme = useTheme();
-  const [selectedModel, setSelectedModel] = useState<string | null>(models[0]);
+  const [selectedModel, setSelectedModel] = useState<string | null>(
+    models[0] || 'llama3.1:8b',
+  );
 
   const handleModelChange = (event: SelectChangeEvent<string | null>): void => {
     setSelectedModel(event.target.value);

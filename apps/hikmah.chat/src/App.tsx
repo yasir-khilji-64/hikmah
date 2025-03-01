@@ -1,7 +1,8 @@
 import { JSX } from 'react';
 import { Box, CircularProgress } from '@mui/material';
-import { Appbar, NeonBox, ServiceUnavailable } from './components';
-import { useHealthCheck, useModels } from './hooks/index/useIndex';
+import { NeonBox, ServiceUnavailable } from './components';
+import { useHealthCheck } from './hooks/index/useIndex';
+import Layout from './layouts/Layout';
 
 function App(): JSX.Element {
   const {
@@ -9,9 +10,6 @@ function App(): JSX.Element {
     error: healthCheckError,
     isLoading,
   } = useHealthCheck();
-  const isServiceAvailable = healthCheck?.status !== 503 && !healthCheckError;
-
-  const { data: models } = useModels(isServiceAvailable);
 
   if (isLoading) {
     return (
@@ -31,14 +29,11 @@ function App(): JSX.Element {
   if (healthCheckError || healthCheck?.status === 503) {
     return <ServiceUnavailable />;
   }
-  if (!models?.data) {
-    return <></>;
-  }
+
   return (
-    <>
-      <Appbar title="Hikmah Chat" models={models?.data} />
+    <Layout>
       <NeonBox />
-    </>
+    </Layout>
   );
 }
 

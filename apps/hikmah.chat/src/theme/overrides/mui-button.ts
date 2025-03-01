@@ -1,6 +1,6 @@
 import { Components, Theme } from '@mui/material';
 
-const MuiButton: Components<Theme>['MuiButton'] = {
+const MuiButton: Components<Omit<Theme, 'components'>>['MuiButton'] = {
   styleOverrides: {
     root: {
       borderRadius: 8,
@@ -18,12 +18,6 @@ const MuiButton: Components<Theme>['MuiButton'] = {
     outlinedSecondary: ({ theme }) => ({
       color: theme.palette.secondary.light,
     }),
-    // text: ({ theme }) => ({
-    //   color: theme.palette.primary.light,
-    // }),
-    // outlined: ({ theme }) => ({
-    //   color: theme.palette.primary.light,
-    // }),
   },
 };
 
