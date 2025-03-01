@@ -1,8 +1,9 @@
 import { JSX } from 'react';
 import { Box, CircularProgress } from '@mui/material';
-import { NeonBox, ServiceUnavailable } from './components';
+import { ServiceUnavailable } from './components';
 import { useHealthCheck } from './hooks/index/useIndex';
 import Layout from './layouts/Layout';
+import HomePage from './pages/HomePage';
 
 function App(): JSX.Element {
   const {
@@ -32,7 +33,7 @@ function App(): JSX.Element {
 
   return (
     <Layout>
-      <NeonBox />
+      <HomePage />
     </Layout>
   );
 }
