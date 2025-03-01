@@ -4,7 +4,7 @@ import './index.css';
 import App from './App.tsx';
 import { ThemeSelector } from './components';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { ReactQueryClientProvider } from './providers/QueryClientProvider.tsx';
+import { ReactQueryClientProvider } from './providers';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

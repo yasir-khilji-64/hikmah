@@ -2,6 +2,7 @@ import { JSX, PropsWithChildren, Suspense } from 'react';
 import { useModels } from '../hooks/index/useIndex';
 import { Appbar } from '../components';
 import { Box, CircularProgress } from '@mui/material';
+import { ErrorBoundary } from '../providers';
 
 const ModelsWrapper = (): JSX.Element => {
   const { data: models } = useModels();
@@ -10,7 +11,7 @@ const ModelsWrapper = (): JSX.Element => {
 
 const Layout = ({ children }: PropsWithChildren): JSX.Element => {
   return (
-    <>
+    <ErrorBoundary>
       <Suspense
         fallback={
           <Box
@@ -24,9 +25,11 @@ const Layout = ({ children }: PropsWithChildren): JSX.Element => {
         }
       >
         <ModelsWrapper />
+        <Box sx={{ flexGrow: 1, overflow: 'auto', minHeight: 0 }}>
+          {children}
+        </Box>
       </Suspense>
-      <Box sx={{ flexGrow: 1, overflow: 'auto', minHeight: 0 }}>{children}</Box>
-    </>
+    </ErrorBoundary>
   );
 };
 
