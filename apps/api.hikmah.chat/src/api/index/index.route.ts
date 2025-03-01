@@ -23,6 +23,10 @@ class IndexRoute {
       '/health-check',
       this.indexController.healthCheck.bind(this.indexController),
     );
+    this.router.get(
+      '/list-models',
+      this.indexController.listOllamaModels.bind(this.indexController),
+    );
   }
 
   public getRoutes(): Router {

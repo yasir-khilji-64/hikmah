@@ -1,7 +1,7 @@
 import { TypographyOptions } from '@mui/material/styles/createTypography';
 
 const typography: TypographyOptions = {
-  fontFamily: '"Orbitron", sans-serif',
+  fontFamily: "'Inter', sans-serif",
   h1: {
     fontSize: '3rem',
     fontWeight: 700,

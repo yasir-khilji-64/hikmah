@@ -41,8 +41,8 @@ class Ollama implements IOllama {
         return 'running';
       }
       return 'stopped';
-    } catch (error) {
-      Logger.error('Ollama Server not Reachable', Ollama.name, { error });
+    } catch (_error) {
+      Logger.error('Ollama Server not Reachable', Ollama.name, {});
       return 'stopped';
     }
   }

@@ -1,8 +1,40 @@
 import { JSX } from 'react';
-import { NeonBox } from './components';
+import { Box, CircularProgress } from '@mui/material';
+import { NeonBox, ServiceUnavailable } from './components';
+import { useHealthCheck } from './hooks/index/useIndex';
+import Layout from './layouts/Layout';
 
 function App(): JSX.Element {
-  return <NeonBox />;
+  const {
+    data: healthCheck,
+    error: healthCheckError,
+    isLoading,
+  } = useHealthCheck();
+
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}
+      >
+        <CircularProgress size={56} />
+      </Box>
+    );
+  }
+
+  if (healthCheckError || healthCheck?.status === 503) {
+    return <ServiceUnavailable />;
+  }
+
+  return (
+    <Layout>
+      <NeonBox />
+    </Layout>
+  );
 }
 
 export default App;
